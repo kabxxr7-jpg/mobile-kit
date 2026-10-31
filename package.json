@@ -1,0 +1,22 @@
+{
+  "name": "mobile-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Field Service Jobs: a small Expo (React Native) app that loads a list from a REST API with every screen state covered by tests that run on a laptop, plus a mock API with switchable failure modes. Local proof project, not a published package.",
+  "type": "module",
+  "engines": {
+    "node": ">=25"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit && npm --prefix app run typecheck",
+    "test": "npm run test:mock-api && npm run test:app",
+    "test:mock-api": "node --test \"mock-api/test/*.test.ts\"",
+    "test:app": "npm --prefix app test",
+    "mock-api": "node mock-api/start.ts",
+    "mutation-check": "node scripts/mutation-check.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
