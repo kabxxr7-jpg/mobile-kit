@@ -71,7 +71,7 @@ const MUTANTS = [
   { id: "client-id-not-encoded", file: "app/src/api/client.ts", what: "the job id is not URL-encoded in getJob",
     find: 'request("GET", `/jobs/${encodeURIComponent(id)}`', replace: 'request("GET", `/jobs/${id}`' },
   { id: "client-cursor-dropped", file: "app/src/api/client.ts", what: "the pagination cursor is never sent",
-    find: "if (params.cursor) query.push(", replace: "if (params.cursor && false) query.push(" },
+    find: "if (params.cursor) query.push(", replace: "if (params.cursor && params.cursor.length < 0) query.push(" },
   // ---------------- response validation
   { id: "validate-any-enum-value", file: "app/src/api/validate.ts", what: "any string is accepted as a status or priority",
     find: " || !(allowed as readonly string[]).includes(value)", replace: "" },
@@ -116,7 +116,7 @@ const MUTANTS = [
     find: "export const PAGE_SIZE = 10;", replace: "export const PAGE_SIZE = 20;" },
   // ---------------- list screen
   { id: "screen-error-state-skipped", file: "app/src/screens/JobListScreen.tsx", what: "a failed first load shows the empty state instead of the error",
-    find: 'if (state.phase === "error" && state.error) {', replace: 'if (state.phase === "error" && state.error && false) {' },
+    find: 'if (state.phase === "error" && state.error) {', replace: 'if (state.phase === "error" && state.error && state.ids.length > 99) {' },
   { id: "screen-empty-state-skipped", file: "app/src/screens/JobListScreen.tsx", what: "an empty list renders a blank list instead of the empty state",
     find: "if (jobs.length === 0) {", replace: "if (jobs.length === -1) {" },
   { id: "screen-retry-does-refresh", file: "app/src/screens/JobListScreen.tsx", what: "Retry on the error screen refreshes silently instead of showing loading",
