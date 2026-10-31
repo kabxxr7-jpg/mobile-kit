@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Field Service Jobs",
+    "slug": "field-service-jobs",
+    "version": "0.1.0",
+    "scheme": "fieldservicejobs",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": ["expo-router"],
+    "extra": {
+      "apiBaseUrl": "http://localhost:4010"
+    }
+  }
+}
