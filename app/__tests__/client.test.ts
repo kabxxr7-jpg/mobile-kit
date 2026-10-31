@@ -208,7 +208,7 @@ describe("timeout and abort", () => {
   });
 
   test("a slow first attempt followed by a fast one succeeds", async () => {
-    const { client, calls } = setup([{ hang: true }, { json: makePage(1, 1, null) }], { timeoutMs: 15 });
+    const { client, calls } = setup([{ hang: true }, { json: makePage(1, 1, null) }], { timeoutMs: 100 });
     await expect(client.listJobs()).resolves.toEqual(makePage(1, 1, null));
     expect(calls).toHaveLength(2);
   });

@@ -170,7 +170,8 @@ describe("pull to refresh", () => {
   });
 
   test("a failed refresh keeps the old list and says it may be offline; Try again recovers", async () => {
-    client.listJobs.mockResolvedValueOnce(makePage(1, 2, null)).mockRejectedValueOnce(networkError()).mockResolvedValueOnce(makePage(5, 2, null));
+    const third = deferred<JobPage>();
+    client.listJobs.mockResolvedValueOnce(makePage(1, 2, null)).mockRejectedValueOnce(networkError()).mockReturnValueOnce(third.promise);
     await renderApp();
     await screen.findByTestId("job-list");
     await pullToRefresh();
@@ -181,7 +182,11 @@ describe("pull to refresh", () => {
     expect(screen.queryByTestId("error-state")).toBeNull();
 
     await pressLabel("Try again");
-    await waitFor(() => expect(screen.queryByTestId("stale-banner")).toBeNull());
+    // as soon as the new attempt starts the old complaint goes away, and the old list is still shown
+    expect(screen.queryByTestId("stale-banner")).toBeNull();
+    expect(isRefreshing()).toBe(true);
+    expect(rowIds()).toEqual(["job-row-job-001", "job-row-job-002"]);
+    await act(async () => third.resolve(makePage(5, 2, null)));
     expect(rowIds()).toEqual(["job-row-job-005", "job-row-job-006"]);
   });
 
