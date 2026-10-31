@@ -28,7 +28,7 @@ It is a small fictional **Field Service Jobs** app (a job list and a job detail 
 |---|---|
 | Node / npm | v25.2.1 / 11.6.2 (macOS 27.2, arm64) |
 | Expo SDK | 58 (`expo` 58.0.22, current stable on the date of the build) |
-| `react-native` / `react` | 0.88.1 / 19.3.0 |
+| `react-native` / `react` / `react-dom` | 0.88.1 / 19.3.0 / 19.3.0 (`react-dom` is declared only because `npm ci` fails without it: expo-router's dependencies have it as a peer, and the first fresh clone caught this) |
 | `expo-router` | 58.0.29 |
 | `react-native-screens` / `react-native-safe-area-context` | 4.30.1 / 5.10.1 |
 | `expo-constants` / `expo-linking` / `expo-status-bar` | 58.0.14 / 58.0.15 / 58.0.4 |
