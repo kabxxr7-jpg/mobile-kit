@@ -10,7 +10,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit && npm --prefix app run typecheck",
     "test": "npm run test:mock-api && npm run test:app",
-    "test:mock-api": "node --test \"mock-api/test/*.test.ts\"",
+    "test:mock-api": "node --import ./mock-api/test/register-ts-resolve.mjs --test \"mock-api/test/*.test.ts\"",
     "test:app": "npm --prefix app test",
     "mock-api": "node mock-api/start.ts",
     "mutation-check": "node scripts/mutation-check.mjs"
