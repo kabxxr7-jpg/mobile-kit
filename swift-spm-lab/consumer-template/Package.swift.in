@@ -1,0 +1,22 @@
+// swift-tools-version: 5.9
+import PackageDescription
+
+// Template for the consumer package. The lab scripts replace @DEPENDENCIES@ and @PKGID@
+// per scenario (see lib/fixture.sh, consumer_manifest). This file is not a manifest itself.
+let package = Package(
+    name: "LabKit",
+    platforms: [.macOS(.v13), .iOS(.v16)],
+    products: [
+        .library(name: "LabKit", targets: ["LabKit"]),
+    ],
+    dependencies: [
+        @DEPENDENCIES@
+    ],
+    targets: [
+        .target(
+            name: "LabKit",
+            dependencies: [.product(name: "AcmeKit", package: "@PKGID@")]
+        ),
+        .testTarget(name: "LabKitTests", dependencies: ["LabKit"]),
+    ]
+)
