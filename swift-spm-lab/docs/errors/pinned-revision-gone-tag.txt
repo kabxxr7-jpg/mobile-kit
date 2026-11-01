@@ -1,0 +1,33 @@
+# scenario: pinned-revision-gone-tag
+# title: Package.resolved pins a tagged revision that no longer exists (tag moved, history rewritten); CI resolves with --force-resolved-versions
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve --force-resolved-versions (exit 1) =====
+Fetching <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit (<t>s)
+Creating working copy for <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’:
+    fatal: unable to read tree (61bed31b6ade578c818218503c4d0f5463ea0ee5)
+error: fatalError
+
+# ===== swift build --force-resolved-versions (exit 1) =====
+Updating <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit (<t>s)
+Creating working copy for <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’:
+    fatal: unable to read tree (61bed31b6ade578c818218503c4d0f5463ea0ee5)
+
+# ===== observation: without --force-resolved-versions (same state) | $ swift package resolve (exit 0) =====
+Updating <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+Computed <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit at 1.0.0 (<t>s)
+Creating working copy for <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit
+Working copy of <LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit resolved at 1.0.0
+
+# ===== observation: revision Package.resolved holds afterwards | $ grep revision <LAB>/.work/scenarios/pinned-revision-gone-tag/consumer/Package.resolved (exit 0) =====
+      "location" : "<LAB>/.work/scenarios/pinned-revision-gone-tag/fixtures/AcmeKit",
+        "revision" : "4cec672fe13de839aba42895c596fdfa97fae2cd",

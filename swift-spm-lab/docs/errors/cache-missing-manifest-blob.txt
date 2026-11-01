@@ -1,0 +1,25 @@
+# scenario: cache-missing-manifest-blob
+# title: The shared cache's bare clone is damaged (the Package.swift object is missing) while refs and commits look fine
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching git://127.0.0.1:<PORT>/AcmeKit from cache
+Fetched git://127.0.0.1:<PORT>/AcmeKit from cache (<t>s)
+Computing version for git://127.0.0.1:<PORT>/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (Couldn’t read ‘a0a930563604b18ebcf8285513e8def168dea404’:
+    fatal: Not a valid object name a0a930563604b18ebcf8285513e8def168dea404)
+
+# ===== swift build  (exit 1) =====
+Updating git://127.0.0.1:<PORT>/AcmeKit
+Updated git://127.0.0.1:<PORT>/AcmeKit (<t>s)
+Computing version for git://127.0.0.1:<PORT>/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (Couldn’t read ‘a0a930563604b18ebcf8285513e8def168dea404’:
+    fatal: Not a valid object name a0a930563604b18ebcf8285513e8def168dea404)
+
+# ===== observation: git fsck on the cached clone | $ git -C <LAB>/.work/scenarios/cache-missing-manifest-blob/cache/repositories/AcmeKit-<hash> fsck --no-progress (exit 2) =====
+broken link from    tree 2d96938148587499280da2765ff54a2255088f66
+              to    blob a0a930563604b18ebcf8285513e8def168dea404
+missing blob a0a930563604b18ebcf8285513e8def168dea404

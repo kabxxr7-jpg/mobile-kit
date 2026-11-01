@@ -1,0 +1,18 @@
+# scenario: monorepo-subdir
+# title: The package lives in a subdirectory (ios/Package.swift) of a monorepo; the repository root has no manifest
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in file system)
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/monorepo-subdir/fixtures/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in file system)

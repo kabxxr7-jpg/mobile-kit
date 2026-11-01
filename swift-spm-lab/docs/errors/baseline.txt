@@ -1,0 +1,38 @@
+# scenario: baseline
+# title: Control: a healthy dependency resolves, builds, and the consumer's test passes
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 0) =====
+Fetching <LAB>/.work/scenarios/baseline/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/baseline/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/baseline/fixtures/AcmeKit
+Computed <LAB>/.work/scenarios/baseline/fixtures/AcmeKit at 1.0.0 (<t>s)
+Creating working copy for <LAB>/.work/scenarios/baseline/fixtures/AcmeKit
+Working copy of <LAB>/.work/scenarios/baseline/fixtures/AcmeKit resolved at 1.0.0
+
+# ===== swift build  (exit 0) =====
+Building for debugging...
+Build complete! (<t> secs)
+
+# ===== swift test (exit 0) =====
+Building for debugging...
+[Constructing description]
+Build complete! (<t> secs)
+Test Suite 'All tests' started at <time>.
+Test Suite 'LabKitTests.xctest' started at <time>.
+Test Suite 'LabKitTests' started at <time>.
+Test Case '-[LabKitTests.LabKitTests testBannerComesFromTheDependency]' started.
+Test Case '-[LabKitTests.LabKitTests testBannerComesFromTheDependency]' passed (<t> seconds).
+Test Suite 'LabKitTests' passed at <time>.
+	 Executed 1 test, with 0 failures (0 unexpected) in <t> (<t>) seconds
+Test Suite 'LabKitTests.xctest' passed at <time>.
+	 Executed 1 test, with 0 failures (0 unexpected) in <t> (<t>) seconds
+Test Suite 'All tests' passed at <time>.
+	 Executed 1 test, with 0 failures (0 unexpected) in <t> (<t>) seconds
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after <t> seconds.

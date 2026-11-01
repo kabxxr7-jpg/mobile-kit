@@ -1,0 +1,16 @@
+# scenario: tools-version-too-new-branch
+# title: The dependency is tracked by branch and the branch tip needs a newer Swift tools version than the installed toolchain
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit (<t>s)
+error: package 'acmekit' @ 32201263a9986404b5ac13c01add31f6425fc2bb is using Swift tools version 99.0.0 but the installed version is 6.4.2 in <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit (<t>s)
+error: package 'acmekit' @ 32201263a9986404b5ac13c01add31f6425fc2bb is using Swift tools version 99.0.0 but the installed version is 6.4.2 in <LAB>/.work/scenarios/tools-version-too-new-branch/fixtures/AcmeKit

@@ -1,0 +1,18 @@
+# scenario: future-version-manifest
+# title: The only manifest is Package@swift-9.0.swift, which this toolchain ignores because 9.0 is newer than it, and there is no Package.swift
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in file system)
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/future-version-manifest/fixtures/AcmeKit
+error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in file system)

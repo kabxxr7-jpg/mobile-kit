@@ -1,0 +1,18 @@
+# scenario: no-matching-tag
+# title: The repository has tags, but none of them is a semantic version (v1, release-1.0, CocoaPods-1.0.0)
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit
+error: Dependencies could not be resolved because no versions of 'acmekit' match the requirement 1.0.0..<2.0.0 and root depends on 'acmekit' 1.0.0..<2.0.0.
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/no-matching-tag/fixtures/AcmeKit
+error: Dependencies could not be resolved because no versions of 'acmekit' match the requirement 1.0.0..<2.0.0 and root depends on 'acmekit' 1.0.0..<2.0.0.

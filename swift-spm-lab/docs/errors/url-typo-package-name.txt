@@ -1,0 +1,12 @@
+# scenario: url-typo-package-name
+# title: The URL has a typo in the repository name, so the package identity no longer matches the product reference
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+error: 'consumer': unknown package 'AcmeKit' in dependencies of target 'LabKit'; valid packages are: 'AcmeKitt' (at '<LAB>/.work/scenarios/url-typo-package-name/fixtures/AcmeKitt')
+
+# ===== swift build  (exit 1) =====
+error: 'consumer': unknown package 'AcmeKit' in dependencies of target 'LabKit'; valid packages are: 'AcmeKitt' (at '<LAB>/.work/scenarios/url-typo-package-name/fixtures/AcmeKitt')

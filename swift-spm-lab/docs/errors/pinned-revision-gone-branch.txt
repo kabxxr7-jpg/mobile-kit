@@ -1,0 +1,16 @@
+# scenario: pinned-revision-gone-branch
+# title: Package.resolved pins a commit of a branch that was force-pushed; the pinned commit no longer exists
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit (<t>s)
+error: could not find the commit 70c96522a51a603f0527f71055d90cfdf3a45c99 in <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit (<t>s)
+error: could not find the commit 70c96522a51a603f0527f71055d90cfdf3a45c99 in <LAB>/.work/scenarios/pinned-revision-gone-branch/fixtures/AcmeKit

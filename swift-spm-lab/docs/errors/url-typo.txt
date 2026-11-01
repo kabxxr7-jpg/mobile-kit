@@ -1,0 +1,18 @@
+# scenario: url-typo
+# title: The dependency URL has a typo in the owner part of its path, so the repository does not exist there
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit
+Fetching <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit
+error: Failed to clone repository <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit:
+    fatal: repository '<LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit' does not exist
+
+# ===== swift build  (exit 1) =====
+Fetching <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit
+Fetching <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit
+error: Failed to clone repository <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit:
+    fatal: repository '<LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit' does not exist

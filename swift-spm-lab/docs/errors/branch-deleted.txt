@@ -1,0 +1,18 @@
+# scenario: branch-deleted
+# title: The dependency tracks branch 'master', which the owner renamed to 'main': fine on the developer's machine, fails on a fresh checkout
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit (<t>s)
+error: could not find a branch named ‘master’ in <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit (did you mean ‘main’?)
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit (<t>s)
+error: could not find a branch named ‘master’ in <LAB>/.work/scenarios/branch-deleted/fixtures/AcmeKit (did you mean ‘main’?)
+
+# ===== observation: developer machine (existing scratch directory): no output, nothing to do | $ swift package resolve (exit 0) =====

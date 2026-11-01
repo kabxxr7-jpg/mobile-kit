@@ -1,0 +1,20 @@
+# scenario: repo-moved
+# title: The repository moved to a new location; the old URL no longer exists (fine on a machine that already cloned it)
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit
+Fetching <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit
+error: Failed to clone repository <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit:
+    fatal: repository '<LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit' does not exist
+
+# ===== swift build  (exit 1) =====
+Fetching <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit
+Fetching <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit
+error: Failed to clone repository <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit:
+    fatal: repository '<LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit' does not exist
+
+# ===== observation: developer machine (existing scratch directory): no output, nothing to do | $ swift package resolve (exit 0) =====

@@ -1,0 +1,29 @@
+# scenario: tools-version-too-new-range
+# title: Every release the version requirement allows needs a newer Swift tools version than the installed toolchain
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+error: Dependencies could not be resolved because root depends on 'acmekit' 1.0.0..<2.0.0.
+'acmekit' >= 1.0.0 cannot be used because no versions of 'acmekit' match the requirement 1.0.1..<2.0.0 and 'acmekit' 1.0.0 contains incompatible tools version (99.0.0).
+
+# ===== swift build  (exit 1) =====
+Updating <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+Updated <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+error: Dependencies could not be resolved because root depends on 'acmekit' 1.0.0..<2.0.0.
+'acmekit' >= 1.0.0 cannot be used because no versions of 'acmekit' match the requirement 1.0.1..<2.0.0 and 'acmekit' 1.0.0 contains incompatible tools version (99.0.0).
+
+# ===== observation: requirement widened to from: 0.9.0 | $ try_wider_requirement (exit 0) =====
+Fetching <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+Fetched <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit (<t>s)
+Computing version for <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+Computed <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit at 0.9.0 (<t>s)
+Creating working copy for <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit
+Working copy of <LAB>/.work/scenarios/tools-version-too-new-range/fixtures/AcmeKit resolved at 0.9.0
+        "version" : "0.9.0"

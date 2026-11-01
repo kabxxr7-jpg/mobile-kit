@@ -1,0 +1,30 @@
+# scenario: cache-missing-tree
+# title: The shared cache's bare clone is missing a tree object (a partial clone): resolution succeeds, the checkout fails
+# toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+# every command ran with --scratch-path, --cache-path, --config-path and --security-path inside swift-spm-lab/.work (flags not shown)
+# text is the tool's own, with only these changes: lab path -> <LAB>, loopback port -> <PORT>, clone hash -> <hash>,
+# durations -> <t>, and progress-counter lines like [3 / 42] removed
+
+# ===== swift package resolve  (exit 1) =====
+Fetching git://127.0.0.1:<PORT>/AcmeKit from cache
+Fetched git://127.0.0.1:<PORT>/AcmeKit from cache (<t>s)
+Computing version for git://127.0.0.1:<PORT>/AcmeKit
+Computed git://127.0.0.1:<PORT>/AcmeKit at 1.0.0 (<t>s)
+Creating working copy for git://127.0.0.1:<PORT>/AcmeKit
+error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’:
+    fatal: unable to read tree (0bfc02bac38bd66b3b245c558ae56e1a9dd29492)
+
+# ===== swift build  (exit 1) =====
+Updating git://127.0.0.1:<PORT>/AcmeKit
+Updated git://127.0.0.1:<PORT>/AcmeKit (<t>s)
+Computing version for git://127.0.0.1:<PORT>/AcmeKit
+Computed git://127.0.0.1:<PORT>/AcmeKit at 1.0.0 (<t>s)
+Creating working copy for git://127.0.0.1:<PORT>/AcmeKit
+error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’:
+    fatal: unable to read tree (0bfc02bac38bd66b3b245c558ae56e1a9dd29492)
+
+# ===== observation: git fsck on the cached clone | $ git -C <LAB>/.work/scenarios/cache-missing-tree/cache/repositories/AcmeKit-<hash> fsck --no-progress (exit 2) =====
+broken link from    tree 2d96938148587499280da2765ff54a2255088f66
+              to    tree 0bfc02bac38bd66b3b245c558ae56e1a9dd29492
+dangling tree 4179593af1ee6a57dd27518e797953a040a11f3e
+missing tree 0bfc02bac38bd66b3b245c558ae56e1a9dd29492
