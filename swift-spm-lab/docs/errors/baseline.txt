@@ -19,7 +19,6 @@ Build complete! (<t> secs)
 
 # ===== swift test (exit 0) =====
 Building for debugging...
-[Constructing description]
 Build complete! (<t> secs)
 Test Suite 'All tests' started at <time>.
 Test Suite 'LabKitTests.xctest' started at <time>.

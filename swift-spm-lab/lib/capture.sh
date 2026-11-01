@@ -24,9 +24,11 @@ normalize() {
     while (<STDIN>) {
       s/\e\[[0-9;]*[A-Za-z]//g;
       # progress counters: "[3 / 42] Name", "[1/11] Fetching ..." (the slash is padded with
-      # U+2009 thin spaces, which perl sees as bytes) and "[Planning deferred tasks]"
+      # U+2009 thin spaces, which perl sees as bytes) and SwiftPM status lines that stand alone in
+      # brackets, such as "[Planning deferred tasks]", "[Computing dependencies]", "[Starting]",
+      # "[Constructing description]". Which of them appear varies from run to run of the same command.
       next if /^\[[^\]]*\d[^\]]*\/[^\]]*\d\]/;
-      next if /^\[Planning deferred tasks\]/;
+      next if /^\[[A-Z][A-Za-z ]+\]\s*$/;
       s/\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+/<time>/g;
       s/\d+\.\d+/<t>/g if /seconds/;
       s/\Q$lab\E/<LAB>/g;

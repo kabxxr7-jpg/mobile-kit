@@ -11,24 +11,24 @@ Written by `./verify.sh` (see the README for what it does and does not prove).
 
 | # | scenario | resolve | Package.swift in message | first line of the real error (trimmed) | fixes verified | wrong fixes refused | docs/errors |
 |---|---|---|---|---|---|---|---|
-| 1 | baseline | exit 0 | no | control: resolve, build and swift test all succeed | 0/0 | 0/0 | new(recorded) |
-| 2 | tag-missing-manifest | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 2/2 | 4/4 | new(recorded) |
-| 3 | monorepo-subdir | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 2/2 | 4/4 | new(recorded) |
-| 4 | manifest-case-lower | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 4/4 | new(recorded) |
-| 5 | manifest-case-mixed | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 3/3 | new(recorded) |
-| 6 | manifest-case-local-path | exit 1 | yes | error: the package manifest at '<LAB>/.work/scenarios/manifest-case-local-path/csvol/fixtures/AcmeK... | 1/1 | 3/3 | new(recorded) |
-| 7 | future-version-manifest | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 4/4 | new(recorded) |
-| 8 | pinned-revision-gone-tag | exit 1 | no | error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’: | 2/2 | 3/3 | new(recorded) |
-| 9 | pinned-revision-gone-branch | exit 1 | no | error: could not find the commit 70c96522a51a603f0527f71055d90cfdf3a45c99 in <LAB>/.work/scenarios/... | 2/2 | 3/3 | new(recorded) |
-| 10 | branch-deleted | exit 1 | no | error: could not find a branch named ‘master’ in <LAB>/.work/scenarios/branch-deleted/fixtures/Acme... | 2/2 | 3/3 | new(recorded) |
-| 11 | tools-version-too-new-range | exit 1 | no | error: Dependencies could not be resolved because root depends on 'acmekit' 1.0.0..<2.0.0. | 2/2 | 4/4 | new(recorded) |
-| 12 | tools-version-too-new-branch | exit 1 | no | error: package 'acmekit' @ 32201263a9986404b5ac13c01add31f6425fc2bb is using Swift tools version 99... | 3/3 | 4/4 | new(recorded) |
-| 13 | cache-missing-manifest-blob | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (Couldn’t read ‘a0a930563604b18e... | 2/2 | 5/5 | new(recorded) |
-| 14 | cache-missing-tree | exit 1 | no | error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’: | 1/1 | 4/4 | new(recorded) |
-| 15 | url-typo | exit 1 | no | error: Failed to clone repository <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit: | 1/1 | 4/4 | new(recorded) |
-| 16 | url-typo-package-name | exit 1 | no | error: 'consumer': unknown package 'AcmeKit' in dependencies of target 'LabKit'; valid packages are... | 1/1 | 3/3 | new(recorded) |
-| 17 | repo-moved | exit 1 | no | error: Failed to clone repository <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit: | 2/2 | 4/4 | new(recorded) |
-| 18 | no-matching-tag | exit 1 | no | error: Dependencies could not be resolved because no versions of 'acmekit' match the requirement 1.... | 2/2 | 4/4 | new(recorded) |
+| 00 | baseline | exit 0 | no | control: resolve, build and swift test all succeed | 0/0 | 0/0 | same |
+| 01 | tag-missing-manifest | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 2/2 | 4/4 | same |
+| 02 | monorepo-subdir | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 2/2 | 4/4 | same |
+| 03 | manifest-case-lower | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 4/4 | same |
+| 04 | manifest-case-mixed | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 3/3 | same |
+| 05 | manifest-case-local-path | exit 1 | yes | error: the package manifest at '<LAB>/.work/scenarios/manifest-case-local-path/csvol/fixtures/AcmeK... | 1/1 | 3/3 | same |
+| 06 | future-version-manifest | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (/Package.swift doesn't exist in... | 1/1 | 4/4 | same |
+| 07 | pinned-revision-gone-tag | exit 1 | no | error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’: | 2/2 | 3/3 | same |
+| 08 | pinned-revision-gone-branch | exit 1 | no | error: could not find the commit 70c96522a51a603f0527f71055d90cfdf3a45c99 in <LAB>/.work/scenarios/... | 2/2 | 3/3 | same |
+| 09 | branch-deleted | exit 1 | no | error: could not find a branch named ‘master’ in <LAB>/.work/scenarios/branch-deleted/fixtures/Acme... | 2/2 | 3/3 | same |
+| 10 | tools-version-too-new-range | exit 1 | no | error: Dependencies could not be resolved because root depends on 'acmekit' 1.0.0..<2.0.0. | 2/2 | 4/4 | same |
+| 11 | tools-version-too-new-branch | exit 1 | no | error: package 'acmekit' @ 32201263a9986404b5ac13c01add31f6425fc2bb is using Swift tools version 99... | 3/3 | 4/4 | same |
+| 12 | cache-missing-manifest-blob | exit 1 | yes | error: the package manifest at '/Package.swift' cannot be accessed (Couldn’t read ‘a0a930563604b18e... | 2/2 | 5/5 | same |
+| 13 | cache-missing-tree | exit 1 | no | error: 'acmekit': Couldn’t check out revision ‘61bed31b6ade578c818218503c4d0f5463ea0ee5’: | 1/1 | 4/4 | same |
+| 14 | url-typo | exit 1 | no | error: Failed to clone repository <LAB>/.work/scenarios/url-typo/fixtures/acme-cp/AcmeKit: | 1/1 | 4/4 | same |
+| 15 | url-typo-package-name | exit 1 | no | error: 'consumer': unknown package 'AcmeKit' in dependencies of target 'LabKit'; valid packages are... | 1/1 | 3/3 | same |
+| 16 | repo-moved | exit 1 | no | error: Failed to clone repository <LAB>/.work/scenarios/repo-moved/fixtures/old/AcmeKit: | 2/2 | 4/4 | same |
+| 17 | no-matching-tag | exit 1 | no | error: Dependencies could not be resolved because no versions of 'acmekit' match the requirement 1.... | 2/2 | 4/4 | same |
 
 A wrong fix is **refused** when `swift package resolve` still fails after it. "same error" means the original message is still there; "different error" means resolve fails for another reason (for example the lock-file mode refuses a missing Package.resolved).
 
