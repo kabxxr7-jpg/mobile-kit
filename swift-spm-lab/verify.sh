@@ -82,8 +82,9 @@ TABLE2="| scenario | wrong fix | result |
 T_FIX=0; P_FIX=0; T_WR=0; R_WR=0; BAD=0; i=0
 for n in $NAMES; do
   f="$WORK/results/$n.tsv"; i=$((i + 1))
+  num="$(basename "$(ls scenarios/*-"$n".sh)" | cut -d- -f1)"
   if [ ! -s "$f" ]; then TABLE1="$TABLE1
-| $i | $n | NO RESULT | | | | | |"; BAD=1; continue; fi
+| $num | $n | NO RESULT | | | | | |"; BAD=1; continue; fi
   b="$(awk -F'\t' '$1=="break"' "$f")"
   bs="$(echo "$b" | cut -f3)"; rr="$(echo "$b" | cut -f4)"; pk="$(echo "$b" | cut -f6)"; ds="$(echo "$b" | cut -f7)"; msg="$(echo "$b" | cut -f8)"
   rr="${rr#resolve=}"; pk="${pk#pkgswift=}"; ds="${ds#doc=}"
@@ -94,7 +95,7 @@ for n in $NAMES; do
   [ "$rw" = "$nw" ] || BAD=1
   label="$n"; [ "$bs" = PASS ] || label="$n ($bs)"
   TABLE1="$TABLE1
-| $i | $label | exit $rr | $pk | $(trunc "$msg" 100) | $pf/$nf | $rw/$nw | $ds |"
+| $num | $label | exit $rr | $pk | $(trunc "$msg" 100) | $pf/$nf | $rw/$nw | $ds |"
   while IFS=$'\t' read -r ph lb st dt; do
     [ "$ph" = wrong ] || continue
     TABLE2="$TABLE2
