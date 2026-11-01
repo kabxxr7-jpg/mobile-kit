@@ -1,5 +1,11 @@
 name: ci
 
+# Note: swift-spm-lab/ (the Swift Package Manager recovery lab) is NOT covered by this workflow.
+# It needs macOS with Xcode and has only ever run locally (see swift-spm-lab/README.md). A macOS job
+# for it would be `runs-on: macos-latest` plus `bash swift-spm-lab/verify.sh --no-record`; that job has
+# not been added and has never run, and the runner's Xcode would change some of the tool texts the lab
+# compares against, so it would need a first run and a review before anyone relies on it.
+
 on:
   push:
   pull_request:

@@ -1,6 +1,6 @@
 # mobile-kit
 
-> **Status:** a proof project. 197 tests pass locally on Node v25.2.1 on macOS (162 in Jest with `jest-expo`, 35 in `node:test`), typecheck clean. **Everything ran in plain Node.** The app was **never run on an iOS Simulator, an Android emulator or a physical phone, and Expo Go was never opened.** The one thing beyond tests: `expo export` bundled the app for iOS and Android with Metro (no Xcode, no Android SDK involved). Not used for any client, no production use. See Limits below.
+> **Status:** a proof project in two separate parts. **The app and its tests:** 197 tests pass locally on Node v25.2.1 on macOS (162 in Jest with `jest-expo`, 35 in `node:test`), typecheck clean. The app side ran in plain Node: it was **never run on an iOS Simulator, an Android emulator or a physical phone, and Expo Go was never opened.** The one thing beyond tests: `expo export` bundled the app for iOS and Android with Metro (no Xcode, no Android SDK involved). **The Swift Package Manager recovery lab** (`swift-spm-lab/`): the only Swift/iOS-toolchain work in this repository. It reproduces failures such as "Package.swift doesn't exist" with local git fixtures, using `swift package`, `swift build` and `swift test` from Xcode 27.2 (Swift 6.4.2) on macOS, and checks a fix and several wrong fixes for each. It is host-only: **no simulator, no device, no Xcode UI, no `xcodebuild`, no client project**, and it is not part of CI. Details and limits are in [`swift-spm-lab/README.md`](swift-spm-lab/README.md). Not used for any client, no production use. See Limits below.
 
 A tested starting point for the usual mobile jobs: "fix my React Native / Expo app that loads data from an API", "the app shows a blank screen", "add loading, error and empty states", "write tests for my mobile app".
 
@@ -17,6 +17,7 @@ It is a small fictional **Field Service Jobs** app (a job list and a job detail 
 | Mock API | `mock-api/` | Dependency-free `node:http` server, 23 fictional jobs, failure modes `slow`, `error500`, `rate-limit` (429 + `Retry-After`), `malformed-json`, `empty`, `wrong-schema`, switchable per request kind and for N requests |
 | Mutation check | `scripts/mutation-check.mjs` | Breaks the client, validation, state and screens in 59 single-line ways, one at a time, on a throwaway copy |
 | Debug checklist | `docs/RN-DEBUG-CHECKLIST.md` | What to ask a client and what to check first, each item tagged verified here or knowledge only |
+| Swift Package Manager recovery lab | `swift-spm-lab/` | 17 deliberately broken Swift package situations (missing or misnamed `Package.swift`, monorepo path, stale `Package.resolved`, deleted branch, tools-version too new, damaged cache, moved repository, ...) with the real tool output, a verified fix and refused wrong fixes for each, plus an ordered [recovery checklist](swift-spm-lab/docs/RECOVERY-CHECKLIST.md) |
 
 **Routing choice:** expo-router, because it is the Expo default (file-based routes under `app/src/app`), pulls in the navigation stack without extra wiring, and ships a testing helper (`renderRouter`) that lets the tests render the real layout and routes.
 
@@ -86,6 +87,7 @@ Starting the app (**never done here**): `cd app && EXPO_PUBLIC_API_BASE_URL=http
 | Loading, empty, error, stale-list, load-more-error states look right and have labels | `list-screen.test.tsx`, `detail-screen.test.tsx` | The **logic and the accessibility props**. Not how it looks |
 | Optimistic write applies at once, rolls back exactly, and survives a refresh | `jobs-cache.test.tsx`, `detail-screen.test.tsx` | Yes, in the test renderer |
 | No secret ships in the bundle | `config.test.ts` (no credentials in URL, `extra` holds only `apiBaseUrl`), bundle check below | Partly: this project has no secrets to leak; the check shows the mechanism |
+| Swift Package Manager failures can be reproduced, fixed, and wrong fixes refused | `swift-spm-lab/verify.sh` | Yes for `swift package`/`swift build`/`swift test` on macOS with local git fixtures. **No** for Xcode's UI, real client projects, binary targets or CocoaPods (see `swift-spm-lab/README.md`) |
 | It runs on iOS | nothing | **No** |
 | It runs on Android | nothing | **No** |
 | It looks and scrolls correctly | nothing | **No** (the test renderer has no layout pass; `FlatList` renders only its first rows, so long-list tests read the data the screen hands to the list) |
@@ -122,6 +124,7 @@ The mutation check shows that these 59 chosen breakages are detected, not that t
 ## Limits
 
 * **Never run on a device, simulator or emulator, and Expo Go was never opened.** Everything is verified in Node with Jest's React Native test renderer. Layout, gestures, scrolling, keyboard, safe areas, fonts, dark mode, dynamic type, screen readers and real `fetch` behaviour of Hermes are unverified. The one build-like step is `expo export` (Metro and Hermes bytecode for both platforms); the resulting bundles were never executed.
+* **Swift/iOS native work is limited to `swift-spm-lab/`**, which runs Swift Package Manager on the macOS host with local git repositories. There is no Xcode project, no signing, no iOS build or simulator run, no `xcodebuild`, and the lab was not driven through Xcode's UI or run on a client project. It shows the method and the tested commands, not that a particular client's iOS build will work.
 * **Platform differences are untested:** platform-specific layout, `Platform.OS` branches (there are none), iOS vs Android back behaviour, status bar, and anything the OS does differently.
 * **No native modules** beyond what Expo SDK 58 brings (`react-native-screens`, `react-native-safe-area-context`, `expo-constants`, `expo-linking`, `expo-status-bar`). No device connectivity API (NetInfo): "offline-ish" means a request failed with a network error or timed out, not that the OS reported no connection.
 * **No push notifications, no auth** (the API is open; there is no token handling, no refresh, no secure storage), **no app store builds, no EAS, no signing, no OTA updates**, no deep-link configuration beyond the default scheme.
@@ -132,6 +135,7 @@ The mutation check shows that these 59 chosen breakages are detected, not that t
 * **Cache and state are in memory only.** Nothing is persisted, so a restart starts from an empty list, and the list is not kept offline.
 * **Test setup shortcuts:** long lists are asserted through the `data` handed to `FlatList`, because the test renderer renders only the first rows; pull to refresh and end-reached are triggered by calling the props (`refreshControl.props.onRefresh`, `onEndReached`), not by a gesture; `console.error` and `console.warn` fail any test (`app/jest.setup.ts`).
 * **`npx expo install --check` and `expo-doctor` were not run:** the first attempt crashed because the Mac's system Node was broken by a Homebrew library update during the build, so a private copy of the same Node v25.2.1 binary was used for every command. The version table is checked by a test instead.
+* **The Swift lab is not in CI.** `swift-spm-lab/` needs macOS with Xcode; no macOS job was added and nothing of it has run on GitHub Actions (a note in `ci.yml` says so).
 * **CI cannot run here.** `.github/workflows/ci.yml` (`npm ci`, `npm ci --prefix app`, typecheck, tests, mutation `--validate` and `--self-test`) has never executed on GitHub. Tested on Node v25.2.1 and macOS only; the full mutation check is not part of CI because it takes minutes.
 * **Not covered:** accessibility audits with real assistive tech, security review, load, and the mock API as a model of any real service (it is a test double with fictional data).
 
@@ -147,6 +151,7 @@ app/                      Expo project (own package.json and lockfile)
   __tests__/              Jest suites (+ helpers/: fake fetch, fake client, router rendering)
 mock-api/                 server.ts, start.ts, test/ (node:test, including the client-vs-mock-api test)
 scripts/mutation-check.mjs
+swift-spm-lab/            Swift Package Manager recovery lab (own README; verify.sh, scenarios/, docs/)
 docs/                     RN-DEBUG-CHECKLIST.md, MUTATION-CHECK.md
 ```
 
