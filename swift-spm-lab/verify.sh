@@ -13,10 +13,11 @@ cd "$(dirname "$0")" || exit 2
 . lib/env.sh
 . lib/capture.sh
 
-RECORD=1; ONLY=""; LIST=0
+RECORD=1; ONLY=""; LIST=0; STRICT_ISO=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --no-record) RECORD=0 ;;
+    --strict-isolation) STRICT_ISO=1 ;;
     --only) shift; ONLY="$1" ;;
     --list) LIST=1 ;;
     -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
@@ -62,11 +63,25 @@ echo
 
 # ---- isolation and strays ------------------------------------------------------------------------------
 tools/isolation-snapshot.sh > "$WORK/isolation-after.txt"
-if diff -u "$WORK/isolation-before.txt" "$WORK/isolation-after.txt" > "$WORK/isolation.diff"; then
-  ISO="unchanged"; ISO_OK=1
+# The before/after listing cannot say WHO changed something, and the Xcode app, while open, does change these places.
+# So a difference is decided by content: any trace of the lab's own names in a real location fails the run. The
+# fingerprint check is first proved on two probe folders (one clean, one with a lab name in it), so it can fail.
+rm -rf "$WORK/fp-probe"; mkdir -p "$WORK/fp-probe/clean" "$WORK/fp-probe/dirty"
+echo "nothing of the lab" > "$WORK/fp-probe/clean/f"; echo "a line that names acmekit" > "$WORK/fp-probe/dirty/f"
+FP_SELF_OK=0
+{ [ -z "$(tools/isolation-fingerprint.sh "$WORK/fp-probe/clean")" ] && [ -n "$(tools/isolation-fingerprint.sh "$WORK/fp-probe/dirty")" ]; } && FP_SELF_OK=1
+tools/isolation-fingerprint.sh > "$WORK/isolation-fingerprint.txt"
+if [ -s "$WORK/isolation-fingerprint.txt" ]; then
+  ISO="LAB TRACE FOUND in a real location (see .work/isolation-fingerprint.txt)"; ISO_DOC="a trace of the lab was found in them"; ISO_OK=0
+elif diff -u "$WORK/isolation-before.txt" "$WORK/isolation-after.txt" > "$WORK/isolation.diff"; then
+  ISO="unchanged"; ISO_DOC="unchanged, and no trace of the lab in them"; ISO_OK=1
+elif [ "$STRICT_ISO" = 1 ]; then
+  ISO="CHANGED (strict mode; see .work/isolation.diff)"; ISO_DOC="changed (strict mode)"; ISO_OK=0
 else
-  ISO="CHANGED (see .work/isolation.diff)"; ISO_OK=0
+  ISO="changed by something else: no trace of the lab in the real locations ($(pgrep -x Xcode >/dev/null 2>&1 && echo 'the Xcode app is running' || echo 'cause not identified'); see .work/isolation.diff)"
+  ISO_DOC="no trace of the lab in them (they did change, probably because the Xcode app was open; pass --strict-isolation with Xcode quit for an exact before/after match)"; ISO_OK=1
 fi
+[ "$FP_SELF_OK" = 1 ] || { ISO="the fingerprint check failed its own probe"; ISO_DOC="$ISO"; ISO_OK=0; }
 STRAY_MOUNTS="$(mount | grep -c " on $WORK/" )"
 STRAY_DAEMONS="$(pgrep -f "base-path=$WORK/" | wc -l | tr -d ' ')"
 STRAY_OK=1; { [ "$STRAY_MOUNTS" = 0 ] && [ "$STRAY_DAEMONS" = 0 ]; } || STRAY_OK=0
@@ -121,7 +136,7 @@ if [ "$RECORD" = 1 ] && [ -z "$ONLY" ]; then
     echo "* Toolchain: $SWIFT_LINE"
     echo "* macOS: $MACOS"
     echo "* $TOTALS"
-    echo "* Real SwiftPM/Xcode locations before vs after the run: $ISO"
+    echo "* Real SwiftPM/Xcode locations: $ISO_DOC"
     echo "* Stray mounts: $STRAY_MOUNTS, stray git daemons: $STRAY_DAEMONS"
     echo
     echo "$TABLE1"
