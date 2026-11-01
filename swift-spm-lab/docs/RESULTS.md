@@ -6,7 +6,7 @@ Written by `./verify.sh` (see the README for what it does and does not prove).
 * Toolchain: Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
 * macOS: 27.2 (arm64)
 * scenarios: 18 | fixes verified (resolve + build): 28/28 | wrong fixes refused: 63/63
-* Real SwiftPM/Xcode locations before vs after the run: unchanged
+* Real SwiftPM/Xcode locations: unchanged, and no trace of the lab in them
 * Stray mounts: 0, stray git daemons: 0
 
 | # | scenario | resolve | Package.swift in message | first line of the real error (trimmed) | fixes verified | wrong fixes refused | docs/errors |
